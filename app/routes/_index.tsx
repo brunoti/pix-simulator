@@ -1,22 +1,13 @@
 import { Icon } from '@iconify/react'
 import type { MetaFunction } from '@remix-run/node'
-import html2canvas from 'html2canvas'
-import { type FC, useState } from 'react'
+import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 import { type InferType, number, object, string } from 'yup'
 import { clsx } from 'clsx'
 import { useMask } from '@react-input/mask'
 import { NumericFormat } from 'react-number-format'
-import * as CurrencyInputExports from 'react-currency-input-field'
 import { nanoid } from 'nanoid'
 import * as htmlToImage from 'html-to-image'
-
-const CurrencyInput =
-	'default' in CurrencyInputExports.default
-		? // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			((CurrencyInputExports.default as any)
-				.default as FC<CurrencyInputExports.CurrencyInputProps>)
-		: CurrencyInputExports.default
 
 export const meta: MetaFunction = () => {
 	return [
@@ -89,10 +80,6 @@ const Configuration = object({
 })
 
 type Configuration = InferType<typeof Configuration>
-
-function is_not_nil<T>(value: T | null | undefined): value is T {
-	return value !== null && value !== undefined
-}
 
 function Configurator({
 	values,
@@ -218,12 +205,47 @@ function Configurator({
 				className={button({ size: 'sm', full: true })}
 				onClick={() =>
 					htmlToImage
-						.toPng(document.querySelector('#receipt')!)
+						.toPng(document.querySelector('#receipt') as HTMLDivElement)
 						.then((image) => window.open(image))
 				}
 			>
 				Download
 			</button>
+			<div className="flex flex-row gap-2 text-green-600 mt-4 items-center justify-center text-xl">
+				<a
+					href="https://twitter.com/original_bop"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<Icon icon="bxl:twitter" />
+				</a>
+				<a
+					href="https://instagram.com/bruno.dev"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<Icon icon="bxl:instagram" />
+				</a>
+				<a
+					href="https://www.linkedin.com/in/bruno-oliveira-de-paula-7175699a/"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<Icon icon="bxl:linkedin" />
+				</a>
+			</div>
+			<div className="text-blue-600 mt-4 items-center justify-center text-xs text-center">
+				Made by{' '}
+				<a
+					href="https://bop.systems"
+					target="_blank"
+					rel="noreferrer"
+					className="underline font-bold"
+				>
+					bop
+				</a>
+				, with ❤. All rights reserved.
+			</div>
 		</div>
 	)
 }
